@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% block title %}levelUP - LOGIN{% endblock %} {%
+block body %}
+
+<div class="position-relative" align="center" id="container">
+  <div class="mx-1 my-1 px-1">
+    <form
+      class="form-control form-control-lg border border-3 border-success"
+      action="#"
+      method="POST"
+    >
+      <h2 align="center" style="color: #ce9228; font-weight: bolder">LOGIN</h2>
+
+      <div class="py-1 my-1" align="center">
+        <label for="inputUsername" class="my-2"
+          ><span style="font-weight: bold">Username</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="inputUsername"
+          name="inputUsername"
+          placeholder="Username"
+        />
+      </div>
+      <div class="my-1" align="center"></div>
+      <div class="py-1" align="center">
+        <label for="inputPassword" class="my-2"
+          ><span style="font-weight: bold">Password</span>
+        </label>
+        <input
+          type="password"
+          class="form-control"
+          id="inputPassword"
+          name="inputPassword"
+          placeholder="Password"
+        />
+      </div>
+      <div class="col gap-1 py-2" align="center">
+        <button
+          type="submit"
+          class="btn btn-lg btn-primary mb-3"
+          align="center"
+        >
+          Confirm Identity</button
+        ><br />
+        OR
+      </div>
+
+      <div class="py-1 my-1" align="center">
+        <a href="{{ url_for('auth.getSignup') }}">
+          <button type="button" class="btn btn-secondary mb-3">
+            Signup
+          </button></a
+        >
+      </div>
+    </form>
+  </div>
+</div>
+
+<br />
+{% endblock %}
