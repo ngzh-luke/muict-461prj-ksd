@@ -1,8 +1,8 @@
 """ Root file of the system """
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, current_user
-from flask import Flask, Blueprint, render_template, abort, flash, session, redirect, request, url_for, jsonify
+from flask_login import LoginManager
+from flask import Flask, flash, session
 from flask_migrate import Migrate
 from werkzeug import exceptions
 from decouple import config as en_var  # import the environment var
@@ -37,7 +37,8 @@ def createApp():
 
     from levelUP.levelUP import application as a
     from levelUP.authen import iden
-    # app.register_blueprint(rootView, url_prefix='/')
+    from levelUP.account import acc
+    levelUP.register_blueprint(acc, url_prefix='/account')
     levelUP.register_blueprint(a, url_prefix='/')
     levelUP.register_blueprint(iden, url_prefix='/')
 

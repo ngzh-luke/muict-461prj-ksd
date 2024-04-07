@@ -1,9 +1,9 @@
-{% extends 'base.html' %} {% block title %}levelUP - HOME{% endblock %} {% block
-body %}
+{% extends 'base.html' %} {% block title %}levelUP - ACCOUNT MANAGER{% endblock
+%} {% block body %}
 <div align="center">
-  <h1 style="color: blue; font-size: 5rem">HOME</h1>
+  <h1 style="color: blue; font-size: 5rem">ACCOUNT MANAGER</h1>
   <!-- {{current_user.__dir__()}} -->
-  <h3>MY ACCOUNT</h3>
+  <h3>EDIT MY ACCOUNT</h3>
   <br />
   {% if current_user %}
   <ul style="list-style: none">
@@ -12,7 +12,7 @@ body %}
     <li>alias: <code>{{current_user.alias}}</code></li>
     <li>first name: <code>{{current_user.fname}}</code></li>
   </ul>
-  <a href="/account"> <button class="btn btn-warning">EDIT ACCOUNT</button></a>
+  <a href="/"> <button class="btn btn-primary">HOME</button></a>
   <br />
   <br />
   <a href="/logout"> <button class="btn btn-secondary">LOGOUT</button></a>

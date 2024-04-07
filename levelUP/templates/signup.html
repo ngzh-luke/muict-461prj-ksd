@@ -11,16 +11,41 @@ block body %}
       <h2 align="center" style="color: #ce9228; font-weight: bolder">SIGNUP</h2>
 
       <div class="py-1 my-1" align="center">
-        <label for="inputUsername" class="my-2"
-          ><span style="font-weight: bold">Username</span></label
+        <label for="firstname" class="my-2"
+          ><span style="font-weight: bold">First name</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="firstname"
+          name="firstname"
+          placeholder="First name (not required)"
+        />
+      </div>
+      <div class="my-1" align="center">
+        <div class="py-1" align="center">
+          <label for="inputUsername" class="my-2"
+            ><span style="font-weight: bold">Username</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="inputUsername"
+            name="inputUsername"
+            placeholder="Username (required)"
+            required
+          />
+        </div>
+        <div class="my-1" align="center"></div>
+        <label for="alias" class="my-2"
+          ><span style="font-weight: bold">Alias</span></label
         >
         <input
           type="text"
           class="form-control"
-          id="inputUsername"
-          name="inputUsername"
-          placeholder="Username"
-          required
+          id="alias"
+          name="alias"
+          placeholder="Alias (not required)"
         />
       </div>
       <div class="my-1" align="center"></div>
@@ -33,7 +58,7 @@ block body %}
           class="form-control"
           id="inputPassword"
           name="inputPassword"
-          placeholder="Password"
+          placeholder="Password (required)"
           pattern="(?=.*[a-z,0-9,A-Z]).{8,}"
           title="Must contain at least 8 or more characters"
           required
@@ -49,7 +74,7 @@ block body %}
           class="form-control"
           id="inputPassword2"
           name="inputPassword2"
-          placeholder="Confirm Password"
+          placeholder="Confirm Password (required)"
           required
         />
       </div>

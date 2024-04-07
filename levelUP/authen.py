@@ -1,8 +1,8 @@
 """ authentication to system """
-from flask import render_template, Blueprint, request, redirect, url_for, session, abort, flash
-from flask_login import login_user, login_required, logout_user, current_user, login_fresh
+from flask import render_template, Blueprint, request, redirect, url_for, session, flash
+from flask_login import login_user, login_required, logout_user, current_user
 from flask_bcrypt import check_password_hash, generate_password_hash
-from .models import User
+from levelUP.models import User
 from levelUP import db
 from levelUP.helpers.IDInstances import userInstance
 
@@ -80,6 +80,8 @@ def signup():
         name = request.form.get('inputUsername')
         password = request.form.get('inputPassword')
         password2 = request.form.get('inputPassword2')
+        alias = request.form.get('alias')
+        firstname = request.form.get('firstname')
         user = User.query.filter_by(uname=name).first()
         if user != None:
             # if user is exists
@@ -93,7 +95,7 @@ def signup():
             try:
                 # create new account
                 newAcc = User(userID=userInstance.generateID(), uname=name, password=generate_password_hash(
-                    password).decode('utf-8'), alias=name)
+                    password).decode('utf-8'), alias=name if alias == None else alias, fname=None if firstname == None else None)
                 db.session.add(newAcc)
                 db.session.commit()
 
