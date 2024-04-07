@@ -95,7 +95,7 @@ def signup():
             try:
                 # create new account
                 newAcc = User(userID=userInstance.generateID(), uname=name, password=generate_password_hash(
-                    password).decode('utf-8'), alias=name if alias == None else alias, fname=None if firstname == None else None)
+                    password).decode('utf-8'), alias=name if alias == None else alias, fname=None if firstname == None else firstname)
                 db.session.add(newAcc)
                 db.session.commit()
 

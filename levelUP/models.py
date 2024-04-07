@@ -1,10 +1,7 @@
 """ Database schema """
-import datetime
-import time
+from flask_login import UserMixin, AnonymousUserMixin
 
-from flask_login import UserMixin, current_user, AnonymousUserMixin
-
-from . import db
+from levelUP import db
 
 
 class User(db.Model, UserMixin, AnonymousUserMixin):
@@ -20,8 +17,8 @@ class User(db.Model, UserMixin, AnonymousUserMixin):
     __tablename__ = "user"
     userID = db.Column(db.String(), unique=True, primary_key=True)
     uname = db.Column(db.String(26), unique=True)  # username
-    fname = db.Column(db.String(56), default="[NONE].firstname")  # firstname
-    alias = db.Column(db.String(20), default="[NONE].alias", nullable=False)
+    fname = db.Column(db.String(56))  # firstname
+    alias = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String())
 
     def __str__(self):

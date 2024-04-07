@@ -1,110 +1,83 @@
 """ account manager """
-from flask import Blueprint, render_template, url_for, flash, request, redirect, session
+from flask import Blueprint, render_template, url_for, flash, request, redirect
 from flask_login import current_user, login_required
-from flask_bcrypt import generate_password_hash, check_password_hash
-from .models import User
+from flask_bcrypt import generate_password_hash
 from levelUP import db
 
 acc = Blueprint('acc', __name__)
 
 
+def commit():
+    db.session.commit()
+
+
 @acc.route("/")
 @login_required
-def myAcc():
-    return render_template("account.html", user=current_user)
+def getAccManager():
+    return render_template("account.html", user=current_user, acc=current_user)
 
 
-@acc.route("/change-password", methods=["POST"])
+@acc.route("/edit/", methods=["POST"])
 @login_required
-def updatePswd():
-    session['last'] = request.endpoint
+def edit():
     try:
         user = current_user
-        curPswd = request.form.get("inputCurrentPassword")
-        newPswd = request.form.get("newPassword")
-        conNewPswd = request.form.get("newPassword2")
-        if check_password_hash(user.password, curPswd):
+        alias = request.form.get('alias')
+        fname = request.form.get('firstname')
+        newPswd = request.form.get("inputPassword")
+        conNewPswd = request.form.get("inputPassword2")
+        if newPswd != None:
             if newPswd != conNewPswd:
                 flash("Passwords are not matched!", category='warning')
 
-            else:
+            elif newPswd == conNewPswd:
                 newPswd = generate_password_hash(newPswd)
                 user.password = newPswd
-                db.session.commit()
+                if alias != None:
+                    user.alias = alias
+                if fname != None:
+                    user.fname = fname
+                commit()
+                flash("Your changes have been updated!", category='success')
+                return redirect(url_for("app.home"))
 
-                flash("Your password has been updated!", category='success')
-            return redirect(url_for("acc.accManager"))
         else:
-            flash("Password is incorrect!", category='error')
-            return redirect(url_for("acc.accManager"))
+            flash("Something is incorrect!", category='error')
+            return redirect(url_for("acc.getAccManager"))
 
-    except:
+    except ValueError:
+        if (user.fname == fname) and (user.alias == alias):
+            flash(message="No changes applied!", category='info')
+            return redirect(url_for("app.home"))
+        if alias != None:
+            user.alias = alias
+        if fname != None:
+            user.fname = fname
+        commit()
+        flash("Your changes have been updated!", category='success')
+        return redirect(url_for("app.home"))
+    except Exception as e:
 
-        flash("Encounter error(s), couldn't update your change(s), please try again",
+        flash(f"No changes applied.Encounter error:{e.__repr__()}",
               category='danger')
-        return redirect(url_for("acc.accManager"))
+        return redirect(url_for("app.home"))
     finally:
-        return redirect(url_for("acc.accManager"))
-    return render_template("account.html", user=current_user, title='Account Manager')
+        return redirect(url_for("app.home"))
+    return render_template("account.html", user=current_user)
 
 
-# localhost:5500/account/my-account/account-manager/change-alias
-@acc.route("/my-account/account-manager/change-alias", methods=["POST"])
+@acc.route("/delete-account/", methods=["POST"])
 @login_required
-# update alias
-def updateAlias():
-    session['last'] = request.endpoint
-    try:
-        user = current_user
-        curAlias = request.form.get("inputCurrentAlias")
-        newAlias = request.form.get("newAlias")
-        conNewAlias = request.form.get("newAlias2")
-        if user.alias == curAlias:
-            if newAlias != conNewAlias:
-                flash("Alias are not matched!", category='warning')
-
-            else:
-
-                user.alias = newAlias
-
-                db.session.commit()
-
-            flash("Your changes has been updated!", category='success')
-            return redirect(url_for("acc.accManager"))
-        else:
-            flash("Alias is incorrect!", category='error')
-            return redirect(url_for("acc.accManager"))
-
-    except:
-
-        flash("Encounter error(s), couldn't update your change(s), please try again",
-              category='danger')
-        return redirect(url_for("acc.accManager"))
-    finally:
-        return redirect(url_for("acc.accManager"))
-    return render_template("account.html", user=current_user, title='Account Manager')
-
-
-# localhost:5500/account/my-account/account-manager/delete-account
-@acc.route("/my-account/account-manager/delete-account", methods=["POST"])
-@login_required
-# delete account
 def delAcc():
-    session['last'] = request.endpoint
     try:
         user = current_user
-        curPswd = request.form.get("inputCurrentPassword")
-        if check_password_hash(user.password, curPswd):
-            db.session.delete(user)
-            db.session.commit()
-            flash("Your account is deleted!", category='success')
-            return redirect(url_for("rootView.redirectToSignup"))
-        else:
-            flash("Password is incorrect!", category='error')
-            return redirect(url_for("acc.accManager"))
+        db.session.delete(user)
+        db.session.commit()
+        flash("Your account is deleted!", category='success')
+        return redirect(url_for("app.home"))
 
-    except:
+    except Exception as e:
 
-        flash("Encounter error(s), action couldn't be done, please try again",
+        flash(f"No changes applied.Encounter error:{e}",
               category='danger')
-        return redirect(url_for("acc.accManager"))
+        return redirect(url_for("app.home"))

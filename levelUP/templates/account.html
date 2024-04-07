@@ -4,14 +4,107 @@
   <h1 style="color: blue; font-size: 5rem">ACCOUNT MANAGER</h1>
   <!-- {{current_user.__dir__()}} -->
   <h3>EDIT MY ACCOUNT</h3>
+  {% if current_user %} {% if acc %}
+  <code>For each field you don't want to edit, you can leave it as it is.</code>
+  <div class="position-relative" align="center" id="container">
+    <div class="mx-1 my-1 px-1">
+      <form
+        class="form-control form-control-lg border border-3 border-success"
+        action="/account/edit"
+        method="POST"
+      >
+        <h2 align="center" style="color: #ce9228; font-weight: bolder">
+          EDIT ACCOUNT FORM
+        </h2>
+        <div class="py-1" align="center">
+          <label for="inputUsername" class="my-2"
+            ><span style="font-weight: bold">Username (Can't edit)</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="inputUsername"
+            name="inputUsername"
+            placeholder="Username (required)"
+            value="{{acc.uname}}"
+            readonly
+          />
+        </div>
+
+        <div class="my-1" align="center"></div>
+        <div class="py-1 my-1" align="center">
+          <label for="firstname" class="my-2"
+            ><span style="font-weight: bold">First name</span>
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstname"
+            name="firstname"
+            placeholder="{{acc.fname}}"
+            value="{{acc.fname}}"
+          />
+        </div>
+        <div class="my-1" align="center"></div>
+        <div class="py-1" align="center">
+          <label for="alias" class="my-2"
+            ><span style="font-weight: bold">Alias</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="alias"
+            name="alias"
+            placeholder="{{acc.alias}}"
+            value="{{acc.alias}}"
+          />
+        </div>
+        <div class="my-1" align="center"></div>
+        <div class="py-1" align="center">
+          <label for="inputPassword" class="my-2"
+            ><span style="font-weight: bold">Password</span>
+          </label>
+          <input
+            type="password"
+            class="form-control"
+            id="inputPassword"
+            name="inputPassword"
+            placeholder="Password"
+          />
+        </div>
+        <div class="my-1" align="center"></div>
+        <div class="py-1" align="center">
+          <label for="inputPassword2" class="my-2"
+            ><span style="font-weight: bold">Confirm Password</span>
+          </label>
+          <input
+            type="password"
+            class="form-control"
+            id="inputPassword2"
+            name="inputPassword2"
+            placeholder="Confirm Password"
+          />
+        </div>
+        <div class="col gap-1 py-2" align="center">
+          <button
+            type="submit"
+            class="btn btn-lg btn-success mb-3"
+            align="center"
+          >
+            Confirm</button
+          ><br />
+        </div>
+      </form>
+      <form action="/account/delete-account" method="post">
+        <button class="btn btn-danger" type="submit">
+          DELETE ACCOUNT without CONFIRMATION
+        </button>
+      </form>
+    </div>
+  </div>
+
   <br />
-  {% if current_user %}
-  <ul style="list-style: none">
-    <li>userID: <code>{{current_user.userID}}</code></li>
-    <li>username: <code>{{current_user.uname}}</code></li>
-    <li>alias: <code>{{current_user.alias}}</code></li>
-    <li>first name: <code>{{current_user.fname}}</code></li>
-  </ul>
+  {% endif %}
   <a href="/"> <button class="btn btn-primary">HOME</button></a>
   <br />
   <br />
