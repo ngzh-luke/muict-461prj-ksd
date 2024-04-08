@@ -1,6 +1,6 @@
 # Log-in by password and key stroke dynamic
 
-Source code for the project of ITCS461 course at Faculty of ICT, Mahidol University
+Source code for the project 'Log-in by password and key stroke dynamic' of ITCS461 course at Faculty of ICT, Mahidol University
 
 ## Members
 

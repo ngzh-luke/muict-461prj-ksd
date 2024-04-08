@@ -67,7 +67,7 @@ def getSignup():
             return redirect(url_for("app.home"))
     except:
         pass
-    return render_template('signup.html', current_user=current_user)
+    return render_template('signup.html', user=current_user)
 
 
 @iden.post('/signup/')

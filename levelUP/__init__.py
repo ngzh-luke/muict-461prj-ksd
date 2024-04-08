@@ -86,10 +86,12 @@ def createApp():
     from levelUP.apis import api
     from levelUP.authen import iden
     from levelUP.account import acc
+    from levelUP.tools import tools
     levelUP.register_blueprint(acc, url_prefix='/account')
     levelUP.register_blueprint(api, url_prefix='/api')
     levelUP.register_blueprint(a, url_prefix='/')
     levelUP.register_blueprint(iden, url_prefix='/')
+    levelUP.register_blueprint(tools, url_prefix='/tools')
 
     # with app.app_context(): # Drop all of the tables
     #     db.drop_all()
