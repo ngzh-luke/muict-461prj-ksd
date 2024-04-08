@@ -72,7 +72,7 @@ def delAcc():
     try:
         user = current_user
         db.session.delete(user)
-        db.session.commit()
+        commit()
         flash("Your account is deleted!", category='success')
         return redirect(url_for("app.home"))
 

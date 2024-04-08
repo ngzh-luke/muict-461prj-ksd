@@ -1,4 +1,5 @@
 """ Root file of the system """
+import threading
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
@@ -8,9 +9,55 @@ from werkzeug import exceptions
 from decouple import config as en_var  # import the environment var
 from levelUP.config import DB_NAME, TIMEOUT
 from levelUP.helpers.errors import errHandl
+from levelUP.helpers.logger import log
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers import SchedulerNotRunningError
 
 db = SQLAlchemy()
 migrate = Migrate()
+
+
+scheduler = BackgroundScheduler()
+
+
+def init_scheduler(app: Flask):
+    from levelUP.helpers.automated import deleteAfterCreatedOneDay
+
+    def run_scheduler():
+        log(title="Automated job", msg='`deleteAfterCreatedOneDay` job is starting.')
+        scheduler.start()
+        log(title="Automated job", msg='`deleteAfterCreatedOneDay` job is started.')
+
+        with app.app_context():
+            try:
+                scheduler.add_job(
+                    id='deleteAfterCreatedOneDay',
+                    func=deleteAfterCreatedOneDay,
+                    args=(app,),
+                    trigger='interval',
+                    minutes=1,
+                    replace_existing=True
+                )
+                log(title="Automated job",
+                    msg='`deleteAfterCreatedOneDay` job is added.')
+            except Exception as e:
+                log(title="Automated job",
+                    msg=f'`deleteAfterCreatedOneDay` job is unable to start. Details:{e}')
+
+        @app.teardown_appcontext
+        def shutdown_scheduler(exception=None):
+            try:
+                log(title="Automated job",
+                    msg='`deleteAfterCreatedOneDay` job is shutting down.')
+                scheduler.shutdown()
+                log(title="Automated job",
+                    msg='`deleteAfterCreatedOneDay` job is successfully shut down.')
+            except SchedulerNotRunningError:
+                log(title="Automated job",
+                    msg=f'`deleteAfterCreatedOneDay` job is unable to shutdown. Details:{e}')
+
+    scheduler_thread = threading.Thread(target=run_scheduler)
+    scheduler_thread.start()
 
 
 def createApp():
@@ -36,9 +83,11 @@ def createApp():
         levelUP.register_error_handler(c, errHandl)
 
     from levelUP.levelUP import application as a
+    from levelUP.apis import api
     from levelUP.authen import iden
     from levelUP.account import acc
     levelUP.register_blueprint(acc, url_prefix='/account')
+    levelUP.register_blueprint(api, url_prefix='/api')
     levelUP.register_blueprint(a, url_prefix='/')
     levelUP.register_blueprint(iden, url_prefix='/')
 
@@ -73,5 +122,7 @@ def createApp():
     @login_manager.user_loader
     def load_user(userID):
         return User.query.get(str(userID))
+
+    # init_scheduler(levelUP) # now is not yet work, current error: raise RuntimeError('cannot schedule new futures after shutdown') RuntimeError: cannot schedule new futures after shutdown
 
     return levelUP

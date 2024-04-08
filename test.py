@@ -1,37 +1,23 @@
-""" unique ID gen """
-import string
-import uuid
+from levelUP.helpers.automated import deleteAfterCreatedOneDay
+from apscheduler.schedulers.background import BackgroundScheduler
+from levelUP.helpers.logger import log
 
 
-class UniqueIDGenerator:
-    """ 
-    A unique ID generator that guarantees the uniqueness of the ID across the instance with ability to specify the ID prefix 
+def ok():
+    log(title='function', msg='executed')
 
 
-    # Example usage
-       ` id_generator = UniqueIDGenerator(prefix='USER', length=12)`
+# Configure the scheduler
+scheduler = BackgroundScheduler()
+scheduler.add_job(ok, 'interval', minutes=1)  # runs every 1 minute
 
-        `user_id = id_generator.generateID()`
+# Start the scheduler
+scheduler.start()
 
-        `print(f"Generated User ID: {user_id}")`
-    """
-
-    def __init__(self, prefix='', length=12, chars=string.ascii_letters + string.digits):
-        self.prefix = prefix
-        self.length = length
-        self.chars = chars
-        self.used_ids = set()
-
-    def generateID(self):
-        while True:
-            # generate a random UUID
-            unique_part = str(uuid.uuid4()).replace(
-                '-', '')[:self.length - len(self.prefix)]
-
-            # combine prefix and generated id
-            unique_id = f"{self.prefix}{unique_part}"
-
-            # check if the ID is unique
-            if unique_id not in self.used_ids:
-                self.used_ids.add(unique_id)
-                return unique_id
+try:
+    # Keep the main thread alive
+    while True:
+        pass
+except (KeyboardInterrupt, SystemExit):
+    # Handle the scheduler shutdown
+    scheduler.shutdown()
