@@ -28,6 +28,6 @@ def _sendDNA(user_id, pattern):
 def sendDNA():
     data = request.get_json()
     pattern = data.get('pattern')
-    user_id = data.get('user_id')
+    user_id = data.get('userID')
     typingdna_response = _sendDNA(user_id, pattern)
     return make_response(jsonify(typingdna_response), 200)

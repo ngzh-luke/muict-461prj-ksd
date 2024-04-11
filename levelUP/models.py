@@ -31,20 +31,5 @@ class User(db.Model, UserMixin, AnonymousUserMixin):
         return (self.userID)
 
     # @property
-    # def isMe(self) -> bool:
-    #     if not current_user.is_authenticated:
-    #         # return current_app.login_manager.unauthorized()
-    #         return False
-    #     elif current_user.is_authenticated and (current_user.uname == 'luke'):
-    #         return True
-    #     return False
-
-    # Should be implemented with cookie or session instead
-    # def setLang(self, lang:str="EN"): # "TH" || "EN"
-    #     if (lang != "EN" or lang != "TH"):
-    #         self.fname = "EN"
-    #     self.langPref = lang
-
-    # @property
     # def getLangPref(self):
     #     return self.langPref

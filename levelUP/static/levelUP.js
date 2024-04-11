@@ -33,22 +33,24 @@ export function loginOrSignUp(login = true) {
 
   let endpoint;
   if (login) {
-    endpoint = "/login";
+    endpoint = "/login-dna/";
   } else {
-    endpoint = "/signup";
+    endpoint = "/signup-dna/";
   }
 
   fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username: username, password: password }),
+    body: JSON.stringify({ username: username }),
   })
     .then((res) => {
       return res.json();
+      // console.log(e);
     })
     .then((data) => {
-      if (data.user_id) {
-        sendTypingData(data.user_id, username + password);
+      alert(data);
+      if (data.userID) {
+        sendTypingData(data.userID, password);
       } else if (data.message) {
         alert(data.message);
       }
@@ -58,8 +60,8 @@ export function loginOrSignUp(login = true) {
 const typingPatternsButton = document.getElementById("typing-patterns-button");
 if (typingPatternsButton) {
   typingPatternsButton.addEventListener("click", () => loginOrSignUp(true));
-  tdna.addTarget("email");
-  tdna.addTarget("password");
+  tdna.addTarget("inputUsername");
+  tdna.addTarget("inputPassword");
 }
 
 function sendTypingData(id, text) {
@@ -70,7 +72,7 @@ function sendTypingData(id, text) {
   fetch("/api/send/dna", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ pattern: pattern, user_id: id }),
+    body: JSON.stringify({ pattern: pattern, userID: id }),
   })
     .then((response) => response.json())
     .then((data) => {

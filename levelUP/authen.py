@@ -1,5 +1,5 @@
 """ authentication to system """
-from flask import render_template, Blueprint, request, redirect, url_for, session, flash
+from flask import render_template, Blueprint, request, redirect, url_for, session, flash, make_response, jsonify
 from flask_login import login_user, login_required, logout_user, current_user
 from flask_bcrypt import check_password_hash, generate_password_hash
 from levelUP.models import User
@@ -23,6 +23,7 @@ def logout():
 
 @iden.get('/login/')
 def getLogin():
+    # login page
     try:
         # if user already logged in
         if User.get_id(current_user):
@@ -35,6 +36,7 @@ def getLogin():
 
 @iden.post("/login/")
 def login():
+    # login operation
     if request.method == 'POST':
         name = request.form.get('inputUsername')
         password = request.form.get('inputPassword')
@@ -46,7 +48,8 @@ def login():
                 login_user(user, remember=False)
                 flash('Welcome, "' + name + '"!', category='login')
 
-                return redirect(url_for("app.home"))
+                return make_response(jsonify({'message': 'Login succesful', 'dnaID': user.dnaID, 'userID': user.userID, 'username': user.uname, }), 200)
+                # return redirect(url_for("app.home"))
 
             else:
                 flash("Password or the username is incorrect!", category='error')
@@ -61,6 +64,7 @@ def login():
 
 @iden.get('/signup/')
 def getSignup():
+    # signup page
     try:
         # if user already logged in
         if User.get_id(current_user):
@@ -72,6 +76,7 @@ def getSignup():
 
 @iden.post('/signup/')
 def signup():
+    # signup operation
     if current_user.is_authenticated:
         flash("Please logout to continue!", category='info')
         return redirect(url_for("app.home"))
