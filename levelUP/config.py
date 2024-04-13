@@ -2,7 +2,7 @@
 from decouple import config as en_var  # import the environment var
 from datetime import timedelta  # , datetime
 
-VERSION = '0.5'
+VERSION = '0.6'
 DEFAULTS = {'DEBUG': "False"}
 DB_NAME = en_var(
     'DATABASE_URL', "sqlite:///levelUP_db.sqlite")

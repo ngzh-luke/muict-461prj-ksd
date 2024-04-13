@@ -9,7 +9,7 @@ Source code for the project 'Log-in by password and key stroke dynamic' of ITCS4
 | 6488004 | Kittipich Aiumbhornsin | <https://github.com/ngzh-luke> |
 | 6488089 | Pattaravit Suksri | <https://github.com/patpatsuk> |
 
-## Instructions
+## Instructions of running locally
 
 1. change working directory on terminal using `cd` command to where the project will be saved
 
@@ -25,5 +25,11 @@ activate virtual environment (Windows) by run command: `venv\Scripts\activate`
 5. install project dependencies by run command:
 `pip install -r requirements/base.txt`
 
-6. run command to start the application:
+6. create `.env` file at the same level as `main.py` file and fill in all of the key and values like they are specified on `.env.example` file. Note that you may have to find and fill the value from your TypingDNA dashboard.
+
+7. run command to start the application:
 `python main.py`
+
+## Live demostratation link
+
+- <https://itcs461prj.lukecreated.com>

@@ -1,5 +1,5 @@
 """ account manager """
-from flask import Blueprint, render_template, url_for, flash, request, redirect
+from flask import Blueprint, render_template, url_for, flash, request, redirect, session
 from flask_login import current_user, login_required
 from flask_bcrypt import generate_password_hash
 from levelUP import db
@@ -71,12 +71,13 @@ def edit():
 @login_required
 def delAcc():
     try:
+        session.clear()
         user = current_user
         db.session.delete(user)
         commit()
-        _sendDNA(user_id=user.userID, delete=True)
+        _sendDNA(user_id=user.userID, delete=True, pattern=None)
         flash("Your account is deleted!", category='success')
-        return redirect(url_for("app.home"))
+        return redirect(url_for("auth.getLogin"))
 
     except Exception as e:
 

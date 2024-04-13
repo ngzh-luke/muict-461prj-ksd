@@ -48,6 +48,9 @@ def login():
             # comparing two given parameters
             if check_password_hash(user.password, password):
 
+                log(title='user', msg={
+                    'userID': user.userID, 'username': user.uname, 'pattern': session['dna']})
+
                 dna = _sendDNA(user_id=user.userID, pattern=session['dna'])
                 log(title='dna', msg=dna)
                 if dna['message_code'] == 10:
