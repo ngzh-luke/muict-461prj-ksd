@@ -5,7 +5,7 @@ block body %}
   <div class="mx-1 my-1 px-1">
     <form
       class="form-control form-control-lg border border-3 border-success"
-      action="/signup"
+      action="{{ url_for('auth.signup') }}"
       method="POST"
     >
       <h2 align="center" style="color: #ce9228; font-weight: bolder">SIGNUP</h2>
