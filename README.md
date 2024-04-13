@@ -1,6 +1,6 @@
 # Log-in by password and key stroke dynamic
 
-Source code for the project 'Log-in by password and key stroke dynamic' of ITCS461 course at Faculty of ICT, Mahidol University
+Source code for the project 'Log-in by password and key stroke dynamic' of ITCS461 Computer and Communication Security course at Faculty of ICT, Mahidol University
 
 ## Members
 
@@ -32,4 +32,5 @@ activate virtual environment (Windows) by run command: `venv\Scripts\activate`
 
 ## Live demostratation link
 
-- <https://ksd.lukecreated.com>
+<!-- - <https://comsecurityprj.lukecreated.com> -->
+<https://461prj.lukecreated.com>

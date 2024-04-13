@@ -73,6 +73,7 @@ def createApp():
     levelUP.config['SESSION_COOKIE_HTTPONLY'] = True
     levelUP.config['SESSION_COOKIE_NAME'] = 'levelUP'
     levelUP.config['PERMANENT_SESSION_LIFETIME'] = TIMEOUT
+    levelUP.config['PREFERRED_URL_SCHEME'] = 'https'  # force https
 
     f_bcrypt.init_app(levelUP)
     db.init_app(levelUP)
