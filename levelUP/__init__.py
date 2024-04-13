@@ -7,7 +7,7 @@ from flask import Flask, flash, session
 from flask_migrate import Migrate
 from werkzeug import exceptions
 from decouple import config as en_var  # import the environment var
-from levelUP.config import DB_NAME, TIMEOUT
+from levelUP.config import DB_NAME, TIMEOUT, SERVER_NAME
 from levelUP.helpers.errors import errHandl
 from levelUP.helpers.logger import log
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -73,6 +73,7 @@ def createApp():
     levelUP.config['SESSION_COOKIE_HTTPONLY'] = True
     levelUP.config['SESSION_COOKIE_NAME'] = 'levelUP'
     levelUP.config['PERMANENT_SESSION_LIFETIME'] = TIMEOUT
+    levelUP.config['SERVER_NAME'] = SERVER_NAME
     levelUP.config['PREFERRED_URL_SCHEME'] = 'https'  # force https
 
     f_bcrypt.init_app(levelUP)
