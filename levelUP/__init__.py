@@ -3,7 +3,7 @@ import threading
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from flask import Flask, flash, session
+from flask import Flask, flash, session, request, redirect
 from flask_migrate import Migrate
 from werkzeug import exceptions
 from decouple import config as en_var  # import the environment var
@@ -97,6 +97,11 @@ def createApp():
 
     # with app.app_context(): # Drop all of the tables
     #     db.drop_all()
+    @levelUP.before_request
+    def force_https():
+        if request.headers.get('X-Forwarded-Proto') == 'http':
+            url = request.url.replace('http://', 'https://', 1)
+            return redirect(url, code=301)
 
     try:
         with levelUP.app_context():
