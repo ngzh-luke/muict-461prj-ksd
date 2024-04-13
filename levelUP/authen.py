@@ -4,7 +4,9 @@ from flask_login import login_user, login_required, logout_user, current_user
 from flask_bcrypt import check_password_hash, generate_password_hash
 from levelUP.models import User
 from levelUP import db
+from levelUP.dna import _sendDNA
 from levelUP.helpers.IDInstances import userInstance
+from levelUP.helpers.logger import log
 
 iden = Blueprint('auth', __name__)
 
@@ -38,6 +40,7 @@ def getLogin():
 def login():
     # login operation
     if request.method == 'POST':
+
         name = request.form.get('inputUsername')
         password = request.form.get('inputPassword')
         user = User.query.filter_by(uname=name).first()
@@ -45,11 +48,27 @@ def login():
             # comparing two given parameters
             if check_password_hash(user.password, password):
 
-                login_user(user, remember=False)
+                dna = _sendDNA(user_id=user.userID, pattern=session['dna'])
+                log(title='dna', msg=dna)
+                if dna['message_code'] == 10:
+                    flash(
+                        message="We need to collect some typing data from you. You may be asked to fill out this form multiple times.", category='info')
+                    return redirect(url_for('tools.typing_patterns'))
+                elif dna['message_code'] == 2:
+                    flash(
+                        message=f"{dna['message']} Please try all over again", category='info')
+                    return redirect(url_for('auth.getLogin'))
+                elif dna['message_code'] == 1 and dna['high_confidence'] == 1:
+                    login_user(user, remember=False)
+                else:
+                    flash(
+                        message=f"DNA high confidence: {dna['high_confidence']}, please try again", category='info')
+                    return redirect(url_for('auth.getLogin'))
+
                 flash('Welcome, "' + name + '"!', category='login')
 
-                return make_response(jsonify({'message': 'Login succesful', 'dnaID': user.dnaID, 'userID': user.userID, 'username': user.uname, }), 200)
-                # return redirect(url_for("app.home"))
+                # return make_response(jsonify({'message': 'Login succesful', 'dnaID': user.dnaID, 'userID': user.userID, 'username': user.uname, 'pattern': session['dna']}), 200)
+                return redirect(url_for("app.home"))
 
             else:
                 flash("Password or the username is incorrect!", category='error')
@@ -99,10 +118,12 @@ def signup():
         else:
             try:
                 # create new account
-                newAcc = User(userID=userInstance.generateID(), uname=name, password=generate_password_hash(
+                newAccID = userInstance.generateID()
+                newAcc = User(userID=newAccID, uname=name, password=generate_password_hash(
                     password).decode('utf-8'), alias=name if alias == None else alias, fname=None if firstname == None else firstname)
                 db.session.add(newAcc)
                 db.session.commit()
+                _sendDNA(user_id=newAccID, pattern=session['dna'])
 
                 flash("Your account has been created!", category='success')
                 return redirect(url_for("auth.getLogin"))

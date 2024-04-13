@@ -2,7 +2,7 @@
 block body %}
 <div class="position-relative" align="center" id="container">
   <div class="mx-1 my-1 px-1">
-    <form id="typing-patterns-form">
+    <form id="typing-patterns-form" method="POST">
       <h3 align="center">Typing 2 Factor Authentication</h3>
       <p align="center">Please type your username and password again.</p>
       <div class="form-group">
@@ -26,9 +26,16 @@ block body %}
         />
       </div>
       <br />
-      <button type="button" id="typing-patterns-button" class="btn btn-primary">
+      <button type="submit" id="typing-patterns-button" class="btn btn-primary">
         Submit
       </button>
+      <div class="py-1 my-1" align="center">
+        <a href="{{ url_for('auth.getLogin') }}">
+          <button type="button" class="btn btn-secondary mb-3">
+            Back to Login
+          </button></a
+        >
+      </div>
     </form>
   </div>
 </div>
