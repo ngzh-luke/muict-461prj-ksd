@@ -32,4 +32,4 @@ activate virtual environment (Windows) by run command: `venv\Scripts\activate`
 
 ## Live demostratation link
 
-- <https://itcs461prj.lukecreated.com>
+- <https://ksd.lukecreated.com>
