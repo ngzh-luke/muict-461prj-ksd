@@ -74,7 +74,7 @@ def createApp():
     levelUP.config['SESSION_COOKIE_SECURE'] = True
     levelUP.config['SESSION_COOKIE_HTTPONLY'] = True
     levelUP.config['SESSION_COOKIE_NAME'] = UniqueIDGenerator(
-        prefix='levelUP', length=10)
+        prefix='levelUP', length=10).generateID()
     levelUP.config['PERMANENT_SESSION_LIFETIME'] = TIMEOUT
     levelUP.config['SERVER_NAME'] = SERVER_NAME
     levelUP.config['PREFERRED_URL_SCHEME'] = 'https'  # force https
