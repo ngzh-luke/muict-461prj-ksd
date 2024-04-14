@@ -4,6 +4,7 @@ from flask_login import current_user, login_required
 from flask_bcrypt import generate_password_hash
 from levelUP import db
 from levelUP.dna import _sendDNA
+from levelUP.helpers.logger import log
 
 acc = Blueprint('acc', __name__)
 
@@ -75,7 +76,8 @@ def delAcc():
         user = current_user
         db.session.delete(user)
         commit()
-        _sendDNA(user_id=user.userID, delete=True, pattern=None)
+        dna = _sendDNA(user_id=user.userID, delete=True, pattern=None)
+        log(title='delAcc', msg=dna)
         flash("Your account is deleted!", category='success')
         return redirect(url_for("auth.getLogin"))
 

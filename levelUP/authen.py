@@ -71,7 +71,7 @@ def login():
                 else:
                     try:
                         flash(
-                            message=f"DNA high confidence: {dna['high_confidence']}, please try again", category='info')
+                            message=f"DNA: {dna} please try again", category='info')
                         return redirect(url_for('auth.getLogin'))
                     except:
                         flash(message=f"DNA{dna}", category='error')
