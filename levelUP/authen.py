@@ -52,7 +52,7 @@ def login():
                     'userID': user.userID, 'username': user.uname, 'pattern': session['dna']})
 
                 dna = _sendDNA(user_id=user.userID, pattern=session['dna'])
-                log(title='dna', msg=dna)
+                log(title='login DNA', msg=dna)
                 if dna['message_code'] == 10:
                     flash(
                         message="We need to collect some typing data from you. You may be asked to fill out this form multiple times.", category='info')
@@ -67,9 +67,13 @@ def login():
                     # return make_response(jsonify({'message': 'Login succesful', 'dnaID': user.dnaID, 'userID': user.userID, 'username': user.uname, 'pattern': session['dna']}), 200)
                     return redirect(url_for("app.home"))
                 else:
-                    flash(
-                        message=f"DNA high confidence: {dna['high_confidence']}, please try again", category='info')
-                    return redirect(url_for('auth.getLogin'))
+                    try:
+                        flash(
+                            message=f"DNA high confidence: {dna['high_confidence']}, please try again", category='info')
+                        return redirect(url_for('auth.getLogin'))
+                    except:
+                        flash(message=f"DNA{dna}", category='error')
+                        return redirect(url_for('auth.getLogin'))
 
             else:
                 flash("Password or the username is incorrect!", category='error')
@@ -124,8 +128,8 @@ def signup():
                     password).decode('utf-8'), alias=name if alias == None else alias, fname=None if firstname == None else firstname)
                 db.session.add(newAcc)
                 db.session.commit()
-                _sendDNA(user_id=newAccID, pattern=session['dna'])
-
+                dna = _sendDNA(user_id=newAccID, pattern=session['dna'])
+                log(title='signup DNA', msg=dna)
                 flash("Your account has been created!", category='success')
                 return redirect(url_for("auth.getLogin"))
             except Exception as e:

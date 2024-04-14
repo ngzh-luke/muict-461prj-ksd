@@ -10,11 +10,17 @@ tools = Blueprint('tools', __name__)
 @tools.route('/typing-patterns', methods=['GET', 'POST'])
 def typing_patterns():
     if request.method == 'POST':
-        dna = _sendDNA(user_id=None, pattern=session['dna'])
-        log(msg=dna, title='DNA')
-        if dna['message_code'] == 10:
-            flash(message='Another DNA pattern has been submitted but probably not enough, you may need to submit again.', category='info')
-        elif dna['message_code'] == 1:
-            flash(category='info',
-                  message='Thank you! You may try to login again now.')
+        try:
+            dna = _sendDNA(user_id=None, pattern=session['dna'])
+            log(msg=dna, title='DNA')
+            if dna['message_code'] == 10:
+                flash(message='Another DNA pattern has been submitted but probably not enough, you may need to submit again.', category='info')
+            elif dna['message_code'] == 1:
+                flash(category='info',
+                      message='Thank you! You may try to login again now.')
+            else:
+                flash(
+                    message=f'{dna}', category='warning')
+        except Exception as e:
+            log(title='typing_patterns', msg=e)
     return render_template("typing_patterns.html", user=current_user)
