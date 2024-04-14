@@ -3,7 +3,7 @@ from flask import render_template, Blueprint, request, redirect, url_for, sessio
 from flask_login import login_user, login_required, logout_user, current_user
 from flask_bcrypt import check_password_hash, generate_password_hash
 from levelUP.models import User
-from levelUP import db
+from levelUP import db, redis_client
 from levelUP.dna import _sendDNA
 from levelUP.helpers.IDInstances import userInstance
 from levelUP.helpers.logger import log
@@ -45,18 +45,15 @@ def login():
         name = request.form.get('inputUsername')
         password = request.form.get('inputPassword')
         user = User.query.filter_by(uname=name).first()
-        try:
-            dna = session['dna']
-        except KeyError:
-            sleep(1)
+        pattern = redis_client.get(name)
         if user:
             # comparing two given parameters
             if check_password_hash(user.password, password):
 
                 log(title='user', msg={
-                    'userID': user.userID, 'username': user.uname, 'pattern': session['dna']})
+                    'userID': user.userID, 'username': user.uname, 'pattern': pattern})
 
-                dna = _sendDNA(user_id=user.userID, pattern=session['dna'])
+                dna = _sendDNA(user_id=user.userID, pattern=pattern)
                 log(title='login DNA', msg=dna)
                 if dna['message_code'] == 10:
                     flash(
@@ -128,12 +125,13 @@ def signup():
         else:
             try:
                 # create new account
+                pattern = redis_client.get(name)
                 newAccID = userInstance.generateID()
                 newAcc = User(userID=newAccID, uname=name, password=generate_password_hash(
                     password).decode('utf-8'), alias=name if alias == None else alias, fname=None if firstname == None else firstname)
                 db.session.add(newAcc)
                 db.session.commit()
-                dna = _sendDNA(user_id=newAccID, pattern=session['dna'])
+                dna = _sendDNA(user_id=newAccID, pattern=pattern)
                 log(title='signup DNA', msg=dna)
                 flash("Your account has been created!", category='success')
                 return redirect(url_for("auth.getLogin"))

@@ -7,13 +7,13 @@ from flask import Flask, flash, session, request, redirect
 from flask_migrate import Migrate
 from werkzeug import exceptions
 from decouple import config as en_var  # import the environment var
-from levelUP.config import DB_NAME, TIMEOUT, SERVER_NAME
+from levelUP.config import DB_NAME, TIMEOUT, SERVER_NAME, REDISHOST, REDISPORT, REDISPASSWORD
 from levelUP.helpers.errors import errHandl
 from levelUP.helpers.logger import log
 from levelUP.helpers.uniqueIDgen import UniqueIDGenerator
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers import SchedulerNotRunningError
-
+import redis
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -21,6 +21,9 @@ COOKIES_NAME = UniqueIDGenerator(
     prefix='levelUP', length=10).generateID()
 
 scheduler = BackgroundScheduler()
+
+redis_client = redis.Redis(
+    host=REDISHOST, port=REDISPORT, password=REDISPASSWORD)
 
 
 def init_scheduler(app: Flask):

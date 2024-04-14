@@ -3,6 +3,7 @@ from flask import Blueprint, request, render_template, flash, session
 from flask_login import current_user
 from levelUP.dna import _sendDNA
 from levelUP.helpers.logger import log
+from levelUP import redis_client
 
 tools = Blueprint('tools', __name__)
 
@@ -11,6 +12,7 @@ tools = Blueprint('tools', __name__)
 def typing_patterns():
     if request.method == 'POST':
         try:
+            # pattern = redis_client.get()
             dna = _sendDNA(user_id=None, pattern=session['dna'])
             log(msg=dna, title='DNA')
             if dna['message_code'] == 10:
