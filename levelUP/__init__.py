@@ -10,8 +10,10 @@ from decouple import config as en_var  # import the environment var
 from levelUP.config import DB_NAME, TIMEOUT, SERVER_NAME
 from levelUP.helpers.errors import errHandl
 from levelUP.helpers.logger import log
+from levelUP.helpers.uniqueIDgen import UniqueIDGenerator
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers import SchedulerNotRunningError
+
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -71,7 +73,8 @@ def createApp():
     levelUP.config['TIMEZONE'] = 'Asia/Bangkok'
     levelUP.config['SESSION_COOKIE_SECURE'] = True
     levelUP.config['SESSION_COOKIE_HTTPONLY'] = True
-    levelUP.config['SESSION_COOKIE_NAME'] = 'levelUP'
+    levelUP.config['SESSION_COOKIE_NAME'] = UniqueIDGenerator(
+        prefix='levelUP', length=10)
     levelUP.config['PERMANENT_SESSION_LIFETIME'] = TIMEOUT
     levelUP.config['SERVER_NAME'] = SERVER_NAME
     levelUP.config['PREFERRED_URL_SCHEME'] = 'https'  # force https
