@@ -63,15 +63,13 @@ def login():
                     return redirect(url_for('auth.getLogin'))
                 elif dna['message_code'] == 1 and dna['high_confidence'] == 1:
                     login_user(user, remember=False)
+                    flash('Welcome, "' + name + '"!', category='login')
+                    # return make_response(jsonify({'message': 'Login succesful', 'dnaID': user.dnaID, 'userID': user.userID, 'username': user.uname, 'pattern': session['dna']}), 200)
+                    return redirect(url_for("app.home"))
                 else:
                     flash(
                         message=f"DNA high confidence: {dna['high_confidence']}, please try again", category='info')
                     return redirect(url_for('auth.getLogin'))
-
-                flash('Welcome, "' + name + '"!', category='login')
-
-                # return make_response(jsonify({'message': 'Login succesful', 'dnaID': user.dnaID, 'userID': user.userID, 'username': user.uname, 'pattern': session['dna']}), 200)
-                return redirect(url_for("app.home"))
 
             else:
                 flash("Password or the username is incorrect!", category='error')
