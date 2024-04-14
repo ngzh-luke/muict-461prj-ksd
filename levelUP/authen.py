@@ -7,6 +7,7 @@ from levelUP import db
 from levelUP.dna import _sendDNA
 from levelUP.helpers.IDInstances import userInstance
 from levelUP.helpers.logger import log
+from time import sleep
 
 iden = Blueprint('auth', __name__)
 
@@ -44,6 +45,10 @@ def login():
         name = request.form.get('inputUsername')
         password = request.form.get('inputPassword')
         user = User.query.filter_by(uname=name).first()
+        try:
+            dna = session['dna']
+        except KeyError:
+            sleep(1)
         if user:
             # comparing two given parameters
             if check_password_hash(user.password, password):
