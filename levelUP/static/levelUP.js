@@ -51,12 +51,12 @@ export function sendTypingData() {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      if (data.message_code == 10) {
-        alert(
-          "We need to collect some typing data from you. You may be asked to fill out this form multiple times."
-        );
-        window.location.href = "tools/typing-patterns";
-      }
+      // if (data.message_code == 10) {
+      //   alert(
+      //     "We need to collect some typing data from you. You may be asked to fill out this form multiple times."
+      //   );
+      //   window.location.href = "tools/typing-patterns";
+      // }
     });
   tdna.reset();
 }

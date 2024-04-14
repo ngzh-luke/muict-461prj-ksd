@@ -30,7 +30,7 @@ def getLogin():
     # login page
     try:
         # if user already logged in
-        if User.get_id(current_user):
+        if current_user.is_authenticated:
             return redirect(url_for("app.home"))
     except:
         pass
