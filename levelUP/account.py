@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, url_for, flash, request, redirect, session
 from flask_login import current_user, login_required
 from flask_bcrypt import generate_password_hash
-from levelUP import db
+from levelUP import db, redis_client
 from levelUP.dna import _sendDNA
 from levelUP.helpers.logger import log
 
@@ -78,6 +78,8 @@ def delAcc():
         commit()
         dna = _sendDNA(user_id=user.userID, delete=True, pattern=None)
         log(title='delAcc', msg=dna)
+        red = redis_client.delete(user.userID)
+        log(title='redis.delete', msg=red)
         flash("Your account is deleted!", category='success')
         return redirect(url_for("auth.getLogin"))
 

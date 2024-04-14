@@ -17,6 +17,8 @@ iden = Blueprint('auth', __name__)
 # log user out
 def logout():
     session.clear()
+    red = redis_client.delete(current_user.userID)
+    log(title='redis.delete', msg=red)
     logout_user()
     flash('Please login again!',
           category='logout')
@@ -46,6 +48,7 @@ def login():
         password = request.form.get('inputPassword')
         user = User.query.filter_by(uname=name).first()
         pattern = redis_client.get(name)
+        log(title='redis.get', msg=pattern)
         if user:
             # comparing two given parameters
             if check_password_hash(user.password, password):
@@ -126,6 +129,7 @@ def signup():
             try:
                 # create new account
                 pattern = redis_client.get(name)
+                log(title='redis.get', msg=pattern)
                 newAccID = userInstance.generateID()
                 newAcc = User(userID=newAccID, uname=name, password=generate_password_hash(
                     password).decode('utf-8'), alias=name if alias == None else alias, fname=None if firstname == None else firstname)
