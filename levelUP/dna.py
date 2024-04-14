@@ -46,4 +46,5 @@ def _sendDNA(user_id, pattern, delete=None):
         res_body = res.content
 
     # return json.loads(res_body.decode("utf-8"))
+    session.clear()
     return json.loads(res_body)

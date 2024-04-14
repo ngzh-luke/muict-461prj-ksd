@@ -35,13 +35,15 @@ if (typingPatternsButton) {
 }
 
 export function sendTypingData() {
+  const rootURL = window.location.origin;
+  const fetchURL = `${rootURL}/api/get/dna`;
   const username = document.getElementById("inputUsername").value;
   const password = document.getElementById("inputPassword").value;
   const pattern = tdna.getTypingPattern({
     type: 1,
     text: username + password,
   });
-  fetch("/api/get/dna", {
+  fetch(fetchURL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ pattern: pattern, username: username }),
