@@ -16,7 +16,7 @@ iden = Blueprint('auth', __name__)
 # log user out
 def logout():
     session.clear()
-    red = redis_client.delete(current_user.userID)
+    red = redis_client.delete(current_user.uname)
     log(title='redis.delete', msg=red)
     logout_user()
     flash('Please login again!',

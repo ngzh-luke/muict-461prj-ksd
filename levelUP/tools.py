@@ -12,7 +12,7 @@ tools = Blueprint('tools', __name__)
 def typing_patterns():
     if request.method == 'POST':
         try:
-            # pattern = redis_client.get(current_user.userID)
+            # pattern = redis_client.get(current_user.uname)
             # log(title='redis.get', msg=pattern)
             dna = _sendDNA(user_id=None, pattern=session['dna'])
             log(msg=dna, title='DNA')
