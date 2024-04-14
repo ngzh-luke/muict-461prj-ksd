@@ -12,9 +12,9 @@ tools = Blueprint('tools', __name__)
 def typing_patterns():
     if request.method == 'POST':
         try:
-            pattern = redis_client.get(current_user.userID)
-            log(title='redis.get', msg=pattern)
-            dna = _sendDNA(user_id=None, pattern=pattern)
+            # pattern = redis_client.get(current_user.userID)
+            # log(title='redis.get', msg=pattern)
+            dna = _sendDNA(user_id=None, pattern=session['dna'])
             log(msg=dna, title='DNA')
             if dna['message_code'] == 10:
                 flash(message='Another DNA pattern has been submitted but probably not enough, you may need to submit again.', category='info')

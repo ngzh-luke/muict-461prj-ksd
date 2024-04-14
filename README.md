@@ -1,4 +1,4 @@
-# Log-in by password and key stroke dynamic
+# Log-in by password and key stroke dynamic (KSD)
 
 Source code for the project 'Log-in by password and key stroke dynamic' of ITCS461 Computer and Communication Security course at Faculty of ICT, Mahidol University
 

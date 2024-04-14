@@ -1,7 +1,6 @@
 """ Database schema """
 from datetime import datetime, timezone
 from flask_login import UserMixin, AnonymousUserMixin
-from uuid import uuid4
 from levelUP import db
 
 
@@ -29,7 +28,3 @@ class User(db.Model, UserMixin, AnonymousUserMixin):
 
     def get_id(self):
         return (self.userID)
-
-    # @property
-    # def getLangPref(self):
-    #     return self.langPref

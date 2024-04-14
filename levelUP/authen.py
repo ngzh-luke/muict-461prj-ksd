@@ -7,7 +7,6 @@ from levelUP import db, redis_client
 from levelUP.dna import _sendDNA
 from levelUP.helpers.IDInstances import userInstance
 from levelUP.helpers.logger import log
-from time import sleep
 
 iden = Blueprint('auth', __name__)
 
