@@ -78,7 +78,7 @@ def delAcc():
         commit()
         dna = _sendDNA(user_id=user.userID, delete=True, pattern=None)
         log(title='delAcc', msg=dna)
-        red = redis_client.delete(user.userID)
+        red = redis_client.delete(user.uname)
         log(title='redis.delete', msg=red)
         flash("Your account is deleted!", category='success')
         return redirect(url_for("auth.getLogin"))

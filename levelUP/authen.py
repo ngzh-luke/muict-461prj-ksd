@@ -46,11 +46,12 @@ def login():
         name = request.form.get('inputUsername')
         password = request.form.get('inputPassword')
         user = User.query.filter_by(uname=name).first()
-        pattern = redis_client.get(name)
-        log(title='redis.get', msg=pattern)
+
         if user:
             # comparing two given parameters
             if check_password_hash(user.password, password):
+                pattern = redis_client.get(name)
+                log(title='redis.get', msg=pattern)
 
                 log(title='user', msg={
                     'userID': user.userID, 'username': user.uname, 'pattern': pattern})
@@ -71,13 +72,10 @@ def login():
                     # return make_response(jsonify({'message': 'Login succesful', 'dnaID': user.dnaID, 'userID': user.userID, 'username': user.uname, 'pattern': session['dna']}), 200)
                     return redirect(url_for("app.home"))
                 else:
-                    try:
-                        flash(
-                            message=f"DNA: {dna} please try again", category='info')
-                        return redirect(url_for('auth.getLogin'))
-                    except:
-                        flash(message=f"DNA{dna}", category='error')
-                        return redirect(url_for('auth.getLogin'))
+
+                    flash(
+                        message=f"DNA: {dna} please try again", category='info')
+                    return redirect(url_for('auth.getLogin'))
 
             else:
                 flash("Password or the username is incorrect!", category='error')
