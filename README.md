@@ -23,7 +23,7 @@ activate virtual environment (Windows) by run command: `venv\Scripts\activate`
 4. check to see which environment is active by run command: `which pip`
 
 5. install project dependencies by run command:
-`pip install -r requirements/base.txt`
+`pip install -r requirements.txt`
 
 6. create `.env` file at the same level as `main.py` file and fill in all of the key and values like they are specified on `.example.env` file. Note that you may have to find and fill the value from your TypingDNA dashboard.
 
