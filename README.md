@@ -33,3 +33,7 @@ activate virtual environment (Windows) by run command: `venv\Scripts\activate`
 ## Live demostratation link
 
 <https://461prj.lukecreated.com> (will be offline anytime before 2025)
+
+## Disclaimer
+
+*We are **not affiliated** with any products/services/sources listed in this project.*
