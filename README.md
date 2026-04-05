@@ -32,7 +32,7 @@ activate virtual environment (Windows) by run command: `venv\Scripts\activate`
 
 ## Live demostratation link
 
-<https://461prj.lukecreated.com> (will be offline anytime before 2025)
+~~<https://461prj.lukecreated.com>~~ (offline as of April 5, 2026)
 
 ## Disclaimer
 
